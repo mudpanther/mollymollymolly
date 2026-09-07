@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a message for molly</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😤</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#140F1B;
+    --panel:#1D1526;
+    --pink:#FF3E9A;
+    --yellow:#F5FF3D;
+    --violet:#8C6BFF;
+    --paper:#F6F1FF;
+    --mute:#8B7FA3;
+  }
+  *{box-sizing:border-box; user-select:none;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(140,107,255,0.25), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(255,62,154,0.2), transparent 45%),
+      var(--ink);
+    color:var(--paper);
+    font-family:'Space Grotesk', sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    overflow:hidden;
+    cursor:default;
+    position:relative;
+  }
+  body.invert-flash{ filter:invert(1); }
+  body.shake{ animation:shakeIt 0.35s ease; }
+  @keyframes shakeIt{
+    0%,100%{ transform:translate(0,0); }
+    20%{ transform:translate(-6px,3px) rotate(-0.4deg); }
+    40%{ transform:translate(5px,-4px) rotate(0.4deg); }
+    60%{ transform:translate(-4px,-3px) rotate(-0.3deg); }
+    80%{ transform:translate(6px,4px) rotate(0.3deg); }
+  }
+
+  .console{
+    width:100%;
+    max-width:520px;
+    background:var(--panel);
+    border-radius:18px;
+    border:2px solid #34293F;
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);
+    overflow:hidden;
+    position:relative;
+    z-index:2;
+  }
+  .chrome{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    background:#120C19;
+    border-bottom:1px solid #2D2337;
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#FF5F57;}
+  .dot.y{background:#FEBC2E;}
+  .dot.g{background:#28C840;}
+  .chrome-url{
+    flex:1;
+    margin-left:8px;
+    background:#1A1223;
+    border-radius:6px;
+    padding:4px 10px;
+    font-size:12px;
+    color:var(--mute);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .alarm-banner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#3A0E1F;
+    border-bottom:2px solid var(--pink);
+    padding:9px 14px;
+    font-family:'Bungee';
+    font-size:13px;
+    color:var(--yellow);
+    animation:sirenText .5s infinite alternate;
+  }
+  @keyframes sirenText{
+    from{ color:var(--yellow); }
+    to{ color:var(--pink); }
+  }
+  .alarm-banner span.label{white-space:nowrap;}
+  #muteBtn{
+    font-family:'Space Grotesk';
+    font-weight:700;
+    font-size:11.5px;
+    background:#1A0E14;
+    color:var(--paper);
+    border:1.5px solid var(--yellow);
+    padding:6px 10px;
+    border-radius:100px;
+    cursor:pointer;
+    flex-shrink:0;
+    z-index:50;
+  }
+
+  @keyframes sirenFlash{
+    0%,100%{ box-shadow: inset 0 0 0 4px #FF3E9A; }
+    50%{ box-shadow: inset 0 0 0 4px #F5FF3D; }
+  }
+  .console.alarm-on{ animation:sirenFlash 0.6s infinite; }
+
+  .stage{
+    padding:30px 24px 26px;
+    text-align:center;
+    position:relative;
+    min-height:440px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--pink);
+    letter-spacing:0.02em;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Bungee', sans-serif;
+    font-weight:400;
+    font-size:clamp(26px,6.5vw,36px);
+    line-height:1.15;
+    margin:0 0 12px;
+    color:var(--paper);
+  }
+  h1 span{color:var(--yellow);}
+  p.lede{
+    color:#CBBEE0;
+    font-size:15px;
+    line-height:1.55;
+    max-width:380px;
+    margin:0 0 22px;
+  }
+  button.primary{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    background:var(--pink);
+    color:#1A0E14;
+    border:none;
+    padding:15px 30px;
+    border-radius:100px;
+    cursor:pointer;
+    box-shadow:0 8px 0 #B8206C;
+    transition:transform .08s ease;
+  }
+  button.primary:active{transform:translateY(6px);box-shadow:0 2px 0 #B8206C;}
+
+  /* ---- chaos stage ---- */
+  .meter-wrap{width:100%;max-width:380px;margin-bottom:16px;}
+  .meter-label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-bottom:6px;}
+  .meter-bar{height:16px;border-radius:8px;background:#241A30;border:1.5px solid #362A44;overflow:hidden;}
+  .meter-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--violet));width:100%;transition:width .2s ease;}
+  .chaos-zone{
+    position:relative;
+    width:100%;
+    max-width:420px;
+    height:250px;
+    margin-bottom:6px;
+    border:1.5px dashed #362A44;
+    border-radius:14px;
+    overflow:hidden;
+    background:#180F22;
+  }
+  .chaos-btn{
+    position:absolute;
+    font-family:'Space Grotesk';
+    font-weight:700;
+    font-size:13.5px;
+    color:#1A0E14;
+    border:none;
+    padding:12px 16px;
+    border-radius:100px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:left .15s ease, top .15s ease, transform .1s ease;
+  }
+  .chaos-btn.real{ background:var(--yellow); }
+  .chaos-btn.decoy{ background:#B8AFC7; }
+  .hint{font-size:12.5px;color:var(--mute);margin-top:6px;}
+  .streak{font-size:12.5px;color:var(--pink);margin-top:2px;min-height:16px;}
+
+  /* toast */
+  .toast{
+    position:fixed;
+    top:18px; right:18px;
+    background:var(--panel);
+    border:1.5px solid var(--pink);
+    color:var(--paper);
+    padding:12px 16px;
+    border-radius:12px;
+    font-size:13.5px;
+    max-width:240px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    transform:translateX(300px);
+    transition:transform .3s ease;
+    z-index:999;
+  }
+  .toast.show{transform:translateX(0);}
+
+  .badge-pop{
+    position:absolute;
+    font-size:20px;
+    pointer-events:none;
+    animation:floatUp .9s ease forwards;
+    z-index:60;
+  }
+  @keyframes floatUp{
+    to{transform:translateY(-50px);opacity:0;}
+  }
+
+  .confetti{
+    position:fixed;
+    top:-20px;
+    font-size:18px;
+    animation:fall linear forwards;
+    z-index:5;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg);}
+  }
+
+  /* falling MOLLY background rain */
+  .rain-word{
+    position:fixed;
+    top:-30px;
+    font-family:'Bungee';
+    color:rgba(255,62,154,0.18);
+    pointer-events:none;
+    z-index:0;
+    animation:rainFall linear forwards;
+  }
+  @keyframes rainFall{
+    to{ transform:translateY(115vh); }
+  }
+
+  /* cursor trail */
+  .trail{
+    position:fixed;
+    pointer-events:none;
+    font-size:16px;
+    z-index:4;
+    animation:trailFade .6s ease forwards;
+  }
+  @keyframes trailFade{
+    to{ opacity:0; transform:translateY(-16px) scale(0.6); }
+  }
+
+  footer.sig{
+    margin-top:18px;
+    font-size:12px;
+    color:var(--mute);
+  }
+  .hidden{display:none;}
+</style>
+</head>
+<body id="body">
+
+<div class="console" id="console">
+  <div class="chrome">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <div class="chrome-url" id="chromeUrl">molly-please-read-this.brother/index.html</div>
+  </div>
+
+  <div class="alarm-banner hidden" id="alarmBanner">
+    <span class="label" id="alarmLabel">🚨 MOLLY ALERT ACTIVE 🚨</span>
+    <button id="muteBtn" onclick="dodgeMute(event)">mute</button>
+  </div>
+
+  <!-- STAGE 0: intro -->
+  <div class="stage" id="stage0">
+    <div class="eyebrow">A MESSAGE HAS ARRIVED, MOLLY</div>
+    <h1>hey molly.<br>there's a <span>noise</span> now.</h1>
+    <p class="lede">your brother built this specifically so you cannot close the tab in peace. warning: this website talks, it will say your name a lot, and the only way to stop it is to catch it. good luck.</p>
+    <button class="primary" onclick="beginChaos()">make it stop →</button>
+    <footer class="sig">it will not go quietly</footer>
+  </div>
+
+  <!-- STAGE 1: chaos -->
+  <div class="stage hidden" id="stage1">
+    <div class="eyebrow" id="chaosEyebrow">CATCH THE REAL BUTTON</div>
+    <h1 style="font-size:22px;">press the <span>real</span> one. good luck finding it.</h1>
+    <div class="meter-wrap">
+      <div class="meter-label"><span>noise level</span><span id="meterPct">100%</span></div>
+      <div class="meter-bar"><div class="meter-fill" id="meterFill"></div></div>
+    </div>
+    <div class="chaos-zone" id="chaosZone"></div>
+    <div class="hint" id="hintText">one of these actually works. the rest are lying.</div>
+    <div class="streak" id="streakText"></div>
+  </div>
+
+  <!-- STAGE 2: victory -->
+  <div class="stage hidden" id="stage2">
+    <div class="eyebrow">SILENCE ACHIEVED</div>
+    <h1>congratulations, molly.<br>you have been <span>officially annoyed.</span></h1>
+    <p class="lede">certificate of annoyance has been generated below. screenshot it and send it to your brother, he will not stop asking otherwise.</p>
+    <div style="background:#241A30;border:1.5px dashed var(--yellow);border-radius:12px;padding:18px;max-width:360px;">
+      <div style="font-family:'Bungee';font-size:15px;color:var(--yellow);margin-bottom:6px;">CERTIFICATE OF ANNOYANCE</div>
+      <div style="font-size:13px;color:#CBBEE0;">awarded to <b style="color:#fff;">Molly</b><br>for surviving one (1) website<br>made by her brother, out of pure love<br>and a concerning amount of free time.</div>
+    </div>
+    <button class="primary" style="margin-top:22px;" onclick="replay()">do it again? (why)</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- tab title nag ---------------- */
+const titles = ["👀 molly.", "you're being watched", "1 new annoyance", "he's still doing this", "close the tab. i dare you", "MOLLY.", "still going"];
+let ti = 0;
+setInterval(()=>{ document.title = titles[ti % titles.length]; ti++; }, 1500);
+
+/* ---------------- audio ---------------- */
+let audioCtx;
+function beep(freq=440, dur=0.09, type='square', vol=0.05){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.value = vol;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    o.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+
+/* ---------------- MOLLY voice alarm ---------------- */
+let alarmInterval = null;
+let alarmMuted = false;
+let alarmStarted = false;
+let chaosLevel = 0; // ramps up as she catches more real buttons
+
+function speakMolly(loud){
+  if(alarmMuted) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(loud ? 'MOLLYYYYY' : 'MOLLY');
+    u.pitch = loud ? 2 : Math.min(2, 1.6 + chaosLevel*0.15 + Math.random()*0.3);
+    u.rate = loud ? 0.8 : Math.min(1.9, 1.1 + chaosLevel*0.1 + Math.random()*0.2);
+    u.volume = 1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+  beep(loud ? 1200 : (700 + chaosLevel*40), loud ? 0.35 : 0.1, 'square', 0.05);
+}
+
+function alarmSpeed(){
+  return Math.max(650, 2200 - chaosLevel*220);
+}
+
+function restartAlarmInterval(){
+  clearInterval(alarmInterval);
+  alarmInterval = setInterval(speakMolly, alarmSpeed());
+}
+
+function startAlarm(){
+  if(alarmStarted) return;
+  alarmStarted = true;
+  document.getElementById('alarmBanner').classList.remove('hidden');
+  document.getElementById('console').classList.add('alarm-on');
+  speakMolly();
+  restartAlarmInterval();
+  startRain();
+}
+
+function stopAlarm(){
+  clearInterval(alarmInterval);
+  document.getElementById('console').classList.remove('alarm-on');
+  try{ speechSynthesis.cancel(); }catch(e){}
+  stopRain();
+}
+
+let muteTries = 0;
+function dodgeMute(e){
+  muteTries++;
+  const btn = document.getElementById('muteBtn');
+  if(muteTries < 5 && Math.random() < 0.85){
+    btn.style.position = 'fixed';
+    const x = Math.random() * (window.innerWidth - 90);
+    const y = Math.random() * (window.innerHeight - 50);
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+    showToast(["nice try.","not today.","almost.","nope."][muteTries % 4]);
+    beep(200,0.08,'sawtooth',0.05);
+    triggerShake();
+  } else {
+    alarmMuted = true;
+    clearInterval(alarmInterval);
+    try{ speechSynthesis.cancel(); }catch(e){}
+    document.getElementById('console').classList.remove('alarm-on');
+    btn.textContent = 'muted';
+    showToast("fine. quiet... for now.");
+  }
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+function triggerShake(){
+  const b = document.getElementById('body');
+  b.classList.add('shake');
+  setTimeout(()=>b.classList.remove('shake'), 350);
+}
+
+function triggerInvert(){
+  const b = document.getElementById('body');
+  b.classList.add('invert-flash');
+  setTimeout(()=>b.classList.remove('invert-flash'), 140);
+}
+setInterval(()=>{
+  if(alarmStarted && document.getElementById('stage2').classList.contains('hidden')){
+    if(Math.random() < 0.35) triggerInvert();
+  }
+}, 3200);
+
+/* ---------------- falling MOLLY rain ---------------- */
+let rainInterval = null;
+function startRain(){
+  if(rainInterval) return;
+  rainInterval = setInterval(()=>{
+    const w = document.createElement('div');
+    w.className = 'rain-word';
+    w.textContent = 'MOLLY';
+    w.style.left = Math.random()*100 + 'vw';
+    w.style.fontSize = (14 + Math.random()*22) + 'px';
+    w.style.animationDuration = (3 + Math.random()*3) + 's';
+    document.body.appendChild(w);
+    setTimeout(()=>w.remove(), 7000);
+  }, 450);
+}
+function stopRain(){
+  clearInterval(rainInterval);
+  rainInterval = null;
+}
+
+/* ---------------- cursor trail ---------------- */
+let lastTrail = 0;
+document.addEventListener('mousemove', (e)=>{
+  const now = Date.now();
+  if(now - lastTrail < 80) return;
+  lastTrail = now;
+  const t = document.createElement('div');
+  t.className = 'trail';
+  t.textContent = '😤';
+  t.style.left = (e.clientX - 8) + 'px';
+  t.style.top = (e.clientY - 8) + 'px';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 600);
+});
+
+/* ---------------- navigation ---------------- */
+function goTo(id){
+  document.querySelectorAll('.stage').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.getElementById('chromeUrl').textContent =
+    id==='stage1' ? 'molly-please-read-this.brother/catch-it'
+    : id==='stage2' ? 'molly-please-read-this.brother/victory'
+    : 'molly-please-read-this.brother/index.html';
+}
+
+function beginChaos(){
+  goTo('stage1');
+  startAlarm();
+  denial = 100;
+  chaosLevel = 0;
+  decoyCount = 1;
+  updateMeter();
+  renderChaosButtons();
+}
+
+/* ---------------- chaos game ---------------- */
+let denial = 100;
+let decoyCount = 1;
+let goodStreak = 0;
+const realLabels = ["STOP", "STOP IT", "MAKE IT STOP", "SILENCE", "END THIS", "STOP NOW", "PLEASE STOP"];
+const decoyLabels = ["stop?", "not this", "stop now", "mute", "close", "quiet", "stop!!", "this one", "definitely this", "wrong button"];
+
+function updateMeter(){
+  document.getElementById('meterFill').style.width = Math.max(0,denial) + '%';
+  document.getElementById('meterPct').textContent = Math.max(0,denial) + '%';
+}
+
+function renderChaosButtons(){
+  const zone = document.getElementById('chaosZone');
+  zone.innerHTML = '';
+  const zw = zone.clientWidth || 380;
+  const zh = zone.clientHeight || 250;
+  const total = 1 + decoyCount;
+  const realIndex = Math.floor(Math.random() * total);
+  const placed = [];
+
+  for(let i=0;i<total;i++){
+    const btn = document.createElement('button');
+    const isReal = (i === realIndex);
+    btn.className = 'chaos-btn ' + (isReal ? 'real' : 'decoy');
+    btn.textContent = isReal
+      ? realLabels[Math.floor(Math.random()*realLabels.length)]
+      : decoyLabels[Math.floor(Math.random()*decoyLabels.length)];
+    btn.dataset.real = isReal ? '1' : '0';
+
+    let x, y, tries = 0;
+    do{
+      x = Math.random() * (zw - 100);
+      y = Math.random() * (zh - 44);
+      tries++;
+    } while(placed.some(p => Math.abs(p.x-x) < 90 && Math.abs(p.y-y) < 40) && tries < 20);
+    placed.push({x,y});
+
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+    btn.onclick = (e)=>handleChaosClick(e, isReal);
+    zone.appendChild(btn);
+  }
+}
+
+function handleChaosClick(e, isReal){
+  const rect = document.getElementById('chaosZone').getBoundingClientRect();
+  const pop = document.createElement('div');
+  pop.className = 'badge-pop';
+  pop.style.left = (e.clientX - rect.left) + 'px';
+  pop.style.top = (e.clientY - rect.top) + 'px';
+
+  if(isReal){
+    goodStreak++;
+    denial = Math.max(0, denial - (10 + Math.random()*6));
+    chaosLevel = Math.min(8, chaosLevel + 0.6);
+    if(goodStreak % 2 === 0 && decoyCount < 6) decoyCount++;
+    pop.textContent = ["😩","🙄","😤","😆"][Math.floor(Math.random()*4)];
+    beep(500 + chaosLevel*30, 0.09);
+    restartAlarmInterval();
+    document.getElementById('hintText').textContent = "wait, that one actually worked?? there are more.";
+    document.getElementById('streakText').textContent = goodStreak + " caught so far. it is not done.";
+  } else {
+    goodStreak = 0;
+    denial = Math.min(100, denial + 2);
+    pop.textContent = ["❌","😂","🙃"][Math.floor(Math.random()*3)];
+    beep(160,0.12,'sawtooth',0.06);
+    showToast(["wrong one, molly.","nope, try again.","that did nothing.","classic."][Math.floor(Math.random()*4)]);
+    triggerShake();
+    document.getElementById('streakText').textContent = "";
+  }
+
+  document.getElementById('chaosZone').appendChild(pop);
+  setTimeout(()=>pop.remove(), 900);
+  updateMeter();
+
+  if(denial <= 0){
+    finishGame();
+    return;
+  }
+  renderChaosButtons();
+}
+
+function finishGame(){
+  goTo('stage2');
+  speakMolly(true);
+  launchConfetti();
+  setTimeout(stopAlarm, 3200);
+}
+
+/* ---------------- confetti ---------------- */
+function launchConfetti(){
+  const emojis = ['🎉','😎','👑','💅','🙃'];
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.animationDuration = (2.5 + Math.random()*2) + 's';
+      c.style.fontSize = (14 + Math.random()*14) + 'px';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 5000);
+    }, i*40);
+  }
+}
+
+function replay(){
+  location.reload();
+}
+</script>
+
+</body>
+</html>
